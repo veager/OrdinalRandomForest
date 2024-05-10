@@ -53,7 +53,7 @@ print(type(arr))
 
 ## 2.2 Properties 
 
-- properties of a Series with the categorical data type
+- properties of a `Series` with the categorical data type
 
 ```python
 s.dtype
@@ -67,7 +67,7 @@ s.cat.ordered
 s.cat.codes
 ```
 
-- properties of a Categorical instance
+- properties of a `Categorical` instance
 
 ```python
 arr = pd.Categorical(['a', 'b', 'c', 'a', 'b', 'c'], categories=['a', 'b', 'c'], ordered=True)

@@ -41,7 +41,7 @@ $$
 - When there are only two different class labels, the C-index reduces to the area under the Receiver Operating Characteristic (ROC) curve
 
 $$
-C-index 
+\text{C-index} 
 $$
 
 

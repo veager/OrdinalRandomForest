@@ -4,6 +4,9 @@ import sklearn
 import sklearn.metrics
 
 
+from .ordinal_measures import ranked_probability_score
+
+
 def print_performance(y_true, y_pred, digits=3):
 
     print(

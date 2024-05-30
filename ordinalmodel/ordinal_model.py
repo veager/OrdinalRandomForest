@@ -5,23 +5,28 @@ from sklearn.utils.multiclass import unique_labels
 from sklearn.ensemble import RandomForestClassifier
 
 
-class OrdinalRandomForestClassifier(BaseEstimator, ClassifierMixin):
-    def __init__(self, rf_params_kwargs):
-        self.rf_params_kwargs = rf_params_kwargs
 
+
+
+class OrdinalClassifierBase(BaseEstimator, ClassifierMixin):
+    def __init__(self, model_params_kwargs):
+        self.model_params_kwargs = model_params_kwargs
+    # -------------------------------------------------
+    def init_base_model(self):
+        model = RandomForestClassifier(**self.model_params_kwargs)
+        return model
+    # -------------------------------------------------
     def fit(self, X, y):
 
         # Check that X and y have correct shape
         X, y = check_X_y(X, y)
-
         # an ordered array of unique labels.
         self.classes_ = unique_labels(y)
-
         # number of target labels
         self.n_classes_ = len(self.classes_)
 
         # initialize the random forest classifiers
-        self.estimators_ = {i : RandomForestClassifier(**self.rf_params_kwargs) for i in range(self.n_classes_ - 1)}
+        self.estimators_ = {i : self.init_base_model() for i in range(self.n_classes_ - 1)}
 
         # create the ordinal target
         ordinal_target = self.create_ordinal_target(y)
@@ -85,6 +90,18 @@ class OrdinalRandomForestClassifier(BaseEstimator, ClassifierMixin):
         check_is_fitted(self)
         return np.argmax(self.predict_prob(X), axis=1)
     # -------------------------------------------
+# ============================================================================
+
+
+
+class OrdinalRandomForestClassifier(OrdinalClassifierBase):
+    def __init__(self, model_params_kwargs):
+        super().__init__(model_params_kwargs)
+    # ------------------------------------------------
+    def init_base_model(self):
+        model = RandomForestClassifier(**self.model_params_kwargs)
+        return model
+    # -------------------------------------------------
     @property
     def feature_importances_(self):
         check_is_fitted(self)
@@ -104,3 +121,4 @@ class OrdinalRandomForestClassifier(BaseEstimator, ClassifierMixin):
 
         return feat_imp
 # ============================================================================
+#%%

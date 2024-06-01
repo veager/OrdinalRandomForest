@@ -7,16 +7,26 @@ import sklearn.metrics
 from .ordinal_measures import ranked_probability_score
 
 
-def print_performance(y_true, y_pred, digits=3):
+def print_performance(y_true, y_pred, digits=3, conf_mat=False):
 
     print(
         '\nAccuracy:',
         np.round(sklearn.metrics.accuracy_score(y_true, y_pred), digits),
-        '\nConfusion matrix:\n',
-        np.round(sklearn.metrics.confusion_matrix(y_true, y_pred), digits),
-        '\nClassification report: \n',
-        sklearn.metrics.classification_report(y_true, y_pred, digits=digits),
+        '\nBalanced accuracy:',
+        np.round(sklearn.metrics.balanced_accuracy_score(y_true, y_pred), digits),
+        '\nKappa:',
+        np.round(sklearn.metrics.cohen_kappa_score(y_true, y_pred), digits),
+        '\nMacro F1:',
+        np.round(sklearn.metrics.f1_score(y_true, y_pred, average='macro'), digits),
     )
+
+    if conf_mat:
+        print(
+            '\nConfusion matrix:\n',
+            np.round(sklearn.metrics.confusion_matrix(y_true, y_pred), digits),
+            '\nClassification report: \n',
+            sklearn.metrics.classification_report(y_true, y_pred, digits=digits),
+        )
 
     return None
 # =============================================================================
